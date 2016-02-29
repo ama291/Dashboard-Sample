@@ -45,7 +45,7 @@
 										<br />
                                         <i class="fa fa-users" style="color: #FFFFFF; font-size: 62px;"></i>
 										<br />
-										<font color="#FFFFFF" style="font-family: 'Roboto'; font-weight: 400; font-size: 150px;" id="members">500</font>
+										<font color="#FFFFFF" style="font-family: 'Roboto'; font-weight: 400; font-size: 150px;" id="members"></font>
 										<br />
 										<font color="#FFFFFF" style="font-family: 'Roboto'; font-weight: 300; font-size: 35px;">TOTAL MEMBERS</font>
 										<br />
@@ -62,7 +62,7 @@
 										<br />
                                         <i class="fa fa-credit-card" style="color: #FFFFFF; font-size: 62px;"></i>
 										<br />
-										<font color="#FFFFFF" style="font-family: 'Roboto'; font-weight: 400; font-size: 150px;" id="purchases">250</font>
+										<font color="#FFFFFF" style="font-family: 'Roboto'; font-weight: 400; font-size: 150px;" id="purchases"></font>
 										<br />
 										<font color="#FFFFFF" style="font-family: 'Roboto'; font-weight: 300; font-size: 35px;">TOTAL PURCHASES</font>
 										<br />
@@ -133,6 +133,8 @@
 		}
         socket.on('data', function (data) {
             getDate();
+            members.innerHTML = data.members;
+            purchases.innerHTML = data.purchases
             for (var s=0; s<data.servers.length; s++) {
                 var row = document.createElement("tr");
                 var name = document.createElement("td");
