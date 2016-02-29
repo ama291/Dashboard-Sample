@@ -1,0 +1,10 @@
+{
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "hapi": "^8.8.0",
+    "socket.io": "latest"
+  }
+}

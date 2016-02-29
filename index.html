@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href='http://fonts.googleapis.com/css?family=Roboto:300,400' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <script src="/socket.io/socket.io.js"></script>
+	</head>
+	<body>
+		<div align="center" width="1900">
+			<br />
+			<table width="1900">
+				<tr>
+					<td width="400" style="padding-left: 200px;">
+                        <font color="#5a5a5a" size="7" style="font-family: 'Roboto'; font-weight: 400;">Company Logo</font>
+					</td>
+					<td align="right" style="padding-right: 200px;">
+						<font color="#EF4D4E" size="6" style="font-family: 'Roboto'; font-weight: 300; text-transform: uppercase;" id="month"></font>
+						<font color="#EF4D4E" size="7" style="font-family: 'Roboto'; font-weight: 400;" id="day"></font>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div align="center" width="1900" style="background-color: rgb(240,240,240); height: 857px;">
+			<hr color="#EF4D4E" style="opacity: .3;"/>
+			<br />
+			<br />
+			<table width="1600">
+				<tr>
+					<td width="400">
+						<font color="#5a5a5a" size="5" style="font-family: 'Roboto'; font-weight: 300;">UPDATES:</font>
+					</td>
+					<td width="595">
+						<font color="#5a5a5a" size="5" style="font-family: 'Roboto'; font-weight: 300;">SERVER STATUS:</font>
+					</td>
+					<td width="595">
+						<font color="#5a5a5a" size="5" style="font-family: 'Roboto'; font-weight: 300;">API Health:</font>
+					</td>
+				</tr>
+				<tr>
+					<td width="400">
+						<table>
+							<tr>
+								<td width="400" align="center">
+									<div style="background: -webkit-linear-gradient(left, #EF4D4E, #F37B20); background: -o-linear-gradient(right, #EF4D4E, #F37B20); background: -moz-linear-gradient(right, #EF4D4E, #F37B20); background: linear-gradient(to right, #EF4D4E, #F37B20);">
+										<br />
+                                        <i class="fa fa-users" style="color: #FFFFFF; font-size: 62px;"></i>
+										<br />
+										<font color="#FFFFFF" style="font-family: 'Roboto'; font-weight: 400; font-size: 150px;" id="members">500</font>
+										<br />
+										<font color="#FFFFFF" style="font-family: 'Roboto'; font-weight: 300; font-size: 35px;">TOTAL MEMBERS</font>
+										<br />
+										<i class="fa fa-clock-o fa-2x fa-inverse"></i><font color="#FFFFFF" style="font-family: 'Roboto'; font-weight: 300; font-size: 25px;"> FEB 2 - NOW</font>
+										<br />
+										<br />
+										<br />
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td width="400" align="center">
+									<div style="background: -webkit-linear-gradient(left, #0082C9, #00ADEF); background: -o-linear-gradient(right, #0082C9, #00ADEF); background: -moz-linear-gradient(right, #0082C9, #00ADEF); background: linear-gradient(to right, #0082C9, #00ADEF);">
+										<br />
+                                        <i class="fa fa-credit-card" style="color: #FFFFFF; font-size: 62px;"></i>
+										<br />
+										<font color="#FFFFFF" style="font-family: 'Roboto'; font-weight: 400; font-size: 150px;" id="purchases">250</font>
+										<br />
+										<font color="#FFFFFF" style="font-family: 'Roboto'; font-weight: 300; font-size: 35px;">TOTAL PURCHASES</font>
+										<br />
+										<i class="fa fa-clock-o fa-2x fa-inverse"></i><font color="#FFFFFF" style="font-family: 'Roboto'; font-weight: 300; font-size: 25px;"> FEB 2 - NOW</font>
+										<br />
+										<br />
+										<br />
+									</div>
+								</td>
+							</tr>
+						</table>
+					</td>
+					<td>
+						<div style="background-color: #FFFFFF; height: 744px;">
+							<table>
+								<tr>
+									<td width="320">
+                                        <font color="#5a5a5a" size="4" style="font-family: 'Roboto'; font-weight: 400;">NAME</font>
+									</td>
+									<td width="120" align="center">
+										<font color="#5a5a5a" size="4" style="font-family: 'Roboto'; font-weight: 400;">CPU USAGE</font>
+									</td>
+									<td width="140">
+										<font color="#5a5a5a" size="4" style="font-family: 'Roboto'; font-weight: 400;">MEMORY USAGE</font>
+									</td>
+								</tr>
+							</table>
+							<hr color="rgb(240,240,240);" style="opacity: .2;"/>
+							<table id="serverdata"></table>
+						</div>
+					</td>
+					<td>
+						<div style="background-color: #FFFFFF; height: 744px;">
+							<table>
+								<tr>
+									<td width="440">
+                                        <font color="#5a5a5a" size="4" style="font-family: 'Roboto'; font-weight: 400;">NAME</font>
+									</td>
+									<td width="140" align="right">
+										<font color="#5a5a5a" size="4" style="font-family: 'Roboto'; font-weight: 400;">STATUS</font>
+									</td>
+								</tr>
+							</table>
+							<hr color="rgb(240,240,240);" style="opacity: .2;"/>
+							<table id="apidata"></table>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</body>
+	<script>
+        var socket = socket = io.connect();
+        var members = document.getElementById("members");
+        var purchases = document.getElementById("purchases");
+        var serverdata = document.getElementById("serverdata");
+        var apidata = document.getElementById("apidata");
+		//date
+		function getDate() {
+			var monthField = document.getElementById("month");
+			var dayField = document.getElementById("day");
+			var date = new Date();
+			var dateString = date.toDateString();
+			var month = dateString.slice(4,7);
+			var day = dateString.slice(8,dateString.length-5);
+			monthField.innerHTML = month;
+			dayField.innerHTML = day;
+		}
+        socket.on('data', function (data) {
+            getDate();
+            for (var s=0; s<data.servers.length; s++) {
+                var row = document.createElement("tr");
+                var name = document.createElement("td");
+                name.width = 320;
+                name.innerHTML = '<font color="#5a5a5a" size="5" style="font-family: ' + "'Roboto'" + '; font-weight: 300;">' + data.servers[s].name + '</font>'
+                row.appendChild(name);
+                var cpu = document.createElement("td");
+    	        cpu.width = 120;
+    	        cpu.align = "right";
+    	        var color;
+    	        var icon;
+    	        if (data.servers[s].cpu < 60) {
+    	          color = "#52D017"
+    	          icon = "fa fa-check";
+    	        }
+    	        else if (data.servers[s].cpu < 80) {
+    	          color = "#FFD700";
+    	          icon = "fa fa-exclamation-triangle";
+    	        }
+    	        else {
+    	          color = "#FF0000";
+    	          icon = "fa fa-times-circle";
+    	        }
+    	        cpu.innerHTML = '<font color="' + color + '" size="5" style="font-family:' + "'Roboto'" + '; font-weight: 400;">' + data.servers[s].cpu + '</font> <i class="' + icon +'" style="color: ' + color + ';"></i>';
+                row.appendChild(cpu);
+                var memory= document.createElement("td");
+    	        memory.width = 140;
+    	        memory.align = "right";
+                if (data.servers[s].memory < 60) {
+    	          color = "#52D017"
+    	        }
+    	        else if (data.servers[s].memory < 80) {
+    	          color = "#FFD700";
+    	        }
+    	        else {
+    	          color = "#FF0000";
+    	        }
+    	        memory.innerHTML = '<font color="' + color + '" size="5" style="font-family:' + "'Roboto'" + '; font-weight: 400;">' + data.servers[s].memory + '</font> <i class="' + icon +'" style="color: ' + color + ';"></i>';
+                row.appendChild(memory);
+                serverdata.appendChild(row);
+            }
+            for (var a=0; a<data.apis.length; a++) {
+                var row = document.createElement("tr");
+                var name = document.createElement("td");
+                name.width = 440;
+                name.innerHTML = '<font color="#5a5a5a" size="5" style="font-family: ' + "'Roboto'" + '; font-weight: 300;">' + data.apis[a].name + '</font>'
+                row.appendChild(name);
+                var status = document.createElement("td");
+    	        status.width = 140;
+    	        status.align = "right";
+    	        var color;
+    	        var icon;
+    	        if (data.apis[a].status < 60) {
+    	          color = "#52D017"
+    	          icon = "fa fa-check";
+    	        }
+    	        else if (data.apis[a].status < 80) {
+    	          color = "#FFD700";
+    	          icon = "fa fa-exclamation-triangle";
+    	        }
+    	        else {
+    	          color = "#FF0000";
+    	          icon = "fa fa-times-circle";
+    	        }
+    	        status.innerHTML = '<font color="' + color + '" size="5" style="font-family:' + "'Roboto'" + '; font-weight: 400;">' + data.apis[a].status + '</font> <i class="' + icon +'" style="color: ' + color + ';"></i>';
+                row.appendChild(status);
+                apidata.appendChild(row);
+            }
+        });
+	</script>
+</html>
